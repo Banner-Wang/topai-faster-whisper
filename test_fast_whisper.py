@@ -100,6 +100,18 @@ def test4(filepath):
     cost_time = time.time() - begin_time
     print(f"test4 lang:{lang} lang_prob:{lang_prob} cost_time:{time.time() - begin_time} text:")
     return lang, lang_prob, cost_time
+def test5(filepath, target_language, target_language_probability_threshold, continue_language):
+    begin_time = time.time()
+    segments, info = model.transcribe_after_detect_language(filepath, beam_size=5, target_language=target_language, target_language_probability_threshold=target_language_probability_threshold, continue_asr=True, continue_language=continue_language)
+    total_text = ""
+    if segments is not None:
+        for segment in segments:
+            total_text += " " + segment.text
+    lang = info.language
+    lang_prob = info.language_probability
+    cost_time = time.time() - begin_time
+    print(f"test5 lang:{lang} lang_prob:{lang_prob} cost_time:{time.time() - begin_time} text:{total_text}")
+    return lang, lang_prob, cost_time
 
 def total_test(filepath, model_size, count, target_language):
     test1_time = 0
